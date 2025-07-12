@@ -78,7 +78,7 @@ export default function CreateNote() {
       const res = await axios.post(`${server_url}/create`, payload);
 
       const { id } = res.data;
-      const link = `${window.location.origin}/v/${id}#${nonceB64}`;
+      const link = `${window.location.origin.replace('www.', '')}/v/${id}#${nonceB64}`;
       setCreatedLink(link);
     } catch (err) {
       console.error("Error creating note:", err);
