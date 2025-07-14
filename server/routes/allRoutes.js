@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { nanoid } = require("nanoid");
 const note = require("../models/note");
+const Counter = require("../models/counter");
 
 router.use(express.json());
 
@@ -23,6 +24,12 @@ router.post("/api/create", async (req, res) => {
     });
 
     await newNote.save();
+
+    await Counter.findByIdAndUpdate(
+      "notes",
+      { $inc: { createdCount: 1 } },
+      { upsert: true, new: true }
+    );
 
     res.status(201).json({ message: "Note Created", id: noteid });
   } catch (error) {
@@ -64,12 +71,27 @@ router.delete("/api/delete/:noteid", async (req, res) => {
       return res.status(404).json({ message: "Not found" });
     }
 
+    await Counter.findByIdAndUpdate(
+      "notes",
+      { $inc: { deletedCount: 1 } },
+      { upsert: true, new: true }
+    );
+
     res.status(200).json({
       message: "Note Destroyed",
     });
   } catch (err) {
     console.error("Database error:", err);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.get("/api/count", async (req, res) => {
+  try {
+    const counter = await Counter.findById("notes");
+    res.status(200).json(counter || { createdCount: 0, deletedCount: 0 });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch counts" });
   }
 });
 
