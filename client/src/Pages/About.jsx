@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Shield, Zap, Eye, Code, ArrowLeft } from "lucide-react";
 import Navbar from "@/components/sections/navbar/default";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 export default function AboutPage() {
   return (
@@ -171,6 +172,52 @@ export default function AboutPage() {
                   </ul>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card className="mb-16">
+            <CardHeader>
+              <CardTitle className="text-2xl">Frequently Asked Questions</CardTitle>
+              <CardDescription>Common questions about Secnote and how it works</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger>What encryption do you use?</AccordionTrigger>
+                  <AccordionContent>
+                    We use the XSalsa20-Poly1305 cipher suite a modern, fast, and secure combination trusted in secure apps like Signal. It ensures both confidentiality (XSalsa20) and tamper protection (Poly1305).
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-2">
+                  <AccordionTrigger>Is my note really encrypted? Can you see what I write?</AccordionTrigger>
+                  <AccordionContent>
+                    No, all notes are encrypted in your browser using the XSalsa20-Poly1305 cipher before they ever reach our servers. We never see your message, your key, or any decrypted content.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-3">
+                  <AccordionTrigger>Where is the encryption key stored?</AccordionTrigger>
+                  <AccordionContent>
+                    The key is never stored. It’s embedded in the URL fragment (after the #) and never sent to our servers. Only someone with the full link can decrypt the note.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-4">
+                  <AccordionTrigger>How long are notes stored before they self-destruct?</AccordionTrigger>
+                  <AccordionContent>
+                    Notes are stored temporarily until they are read. Once opened, it will be permanently deleted. If a note is never accessed, it will be automatically deleted
+                    after 30 days as a security measure.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-5">
+                  <AccordionTrigger>Do you keep logs or metadata?</AccordionTrigger>
+                  <AccordionContent>
+                    No. We don’t log IP addresses, user agents, or timestamps. We store the encrypted message temporarily, only until it’s read.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </CardContent>
           </Card>
 
